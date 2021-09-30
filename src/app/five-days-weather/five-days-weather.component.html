@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div class="loader" *ngIf="loading"></div>
+
+    <div class="alert alert-warning" role="alert" *ngIf="!loading && !displayForecast">
+        No data available for this location.
+    </div>
+
+    <div class="panel panel-default" *ngIf="!loading && displayForecast">
+        <div class="panel-heading">
+            <h3 class="panel-title">5-day forecast for {{weatherArray[0].locationName}}</h3>
+        </div>
+
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let forecastItem of weatherArray">
+                {{forecastItem.date | date:"EEEE, MMM dd"}}:
+                {{forecastItem.currentConditions}}
+                - Min: {{forecastItem.minTemp | number: "1.0-0"}}
+                - Max: {{forecastItem.maxTemp | number: "1.0-0"}}
+                <img class="icon" [src]="forecastItem.icon" *ngIf="forecastItem.icon">
+            </li>
+        </ul>
+    </div>
+    <button class="btn btn-success" tabindex="0" id="mainPageBtn" (click)="back()">&lt; Back to main page</button>
+</div>

@@ -10,11 +10,26 @@ import { OpenWeatherService } from './open-weather.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AddLocationComponent } from './add-location/add-location.component';
 import { APP_BASE_HREF } from '@angular/common';
+import { FiveDaysWeatherComponent } from './five-days-weather/five-days-weather.component';
 
 @NgModule({
-  imports:      [ BrowserModule, FormsModule, HttpClientModule, AppRoutingModule ],
-  declarations: [ AppComponent, HelloComponent, CurrentWeatherComponent, AddLocationComponent ],
-  providers:    [ OpenWeatherService, {provide: APP_BASE_HREF, useValue : "/" } ],
-  bootstrap:    [ AppComponent ]
+  imports: [ 
+    BrowserModule, 
+    FormsModule, 
+    HttpClientModule, 
+    AppRoutingModule 
+  ],
+  declarations: [ 
+    AppComponent, 
+    HelloComponent, 
+    CurrentWeatherComponent, 
+    AddLocationComponent, 
+    FiveDaysWeatherComponent 
+  ],
+  providers: [ 
+    OpenWeatherService, 
+    {provide: APP_BASE_HREF, useValue : "/" } 
+  ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

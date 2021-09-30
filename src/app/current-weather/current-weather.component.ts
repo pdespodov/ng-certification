@@ -22,23 +22,23 @@ export class CurrentWeatherComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.openWeatherService.getCurrentWeather(this.zipCode).subscribe((forecast: ICurrentWeather) => {
-      this.currentWeather = forecast;
+    this.openWeatherService.getCurrentWeather(this.zipCode).subscribe(
+      (forecast: ICurrentWeather) => {
+        this.currentWeather = forecast;
 
-      this.loading = false;
-    }, 
-    (err: HttpErrorResponse) => {
-      console.log(err);
-      this.currentWeather = {
-        locationName: "Unknown",
-        currentConditions: "Unknown",
-        currentTemp: 0,
-        minTemp: 0,
-        maxTemp: 0
-      };
+        this.loading = false;
+      }, 
+      (err: HttpErrorResponse) => {
+        this.currentWeather = {
+          locationName: "Unknown",
+          currentConditions: "Unknown",
+          currentTemp: 0,
+          minTemp: 0,
+          maxTemp: 0
+        };
 
-      this.loading = false;
-    });
+        this.loading = false;
+      });
   }
 
   closeComponent(): void {

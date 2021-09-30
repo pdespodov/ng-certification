@@ -7,14 +7,15 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class OpenWeatherService {
   private apiKey: string = "5a4b2d457ecbef9eb2a71e480b947604";
-  private openWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${this.apiKey}&units=metric`;
+  private currentForecastUrl = `https://api.openweathermap.org/data/2.5/weather?appid=${this.apiKey}&units=metric`;
+  private fiveDaysForecastUrl = `https://api.openweathermap.org/data/2.5/forecast/daily?appid=${this.apiKey}&units=metric`;
 
   constructor(private http: HttpClient) {}
 
   getCurrentWeather(zipCode: string): Observable<ICurrentWeather> {
-    let url = `${this.openWeatherUrl}&zip=${zipCode}`;
+    let url = `${this.currentForecastUrl}&zip=${zipCode}`;
 
-    return this.http.get<string>(url).pipe(map(jsonData => {
+    return this.http.get<any>(url).pipe(map(jsonData => {
       return {
         locationName: jsonData["name"],
         currentConditions: jsonData["weather"][0]["main"],
@@ -26,8 +27,33 @@ export class OpenWeatherService {
     }));
   }
 
+  getFiveDaysForecast(zipCode: string): Observable<ICurrentWeather[]> {
+    let url = `${this.fiveDaysForecastUrl}&zip=${zipCode}`;
+
+    return this.http.get<any>(url).pipe(map(jsonData => {
+      let weatherArray = new Array<ICurrentWeather>();
+      let list = jsonData["list"];
+
+      for(let i = 0; i < 5; i ++) {
+        let listItem = list[i];
+
+        weatherArray.push({
+          date: new Date(listItem["dt"] * 1000),
+          locationName: jsonData["city"]["name"],
+          currentConditions: listItem["weather"][0]["main"],
+          currentTemp: listItem["temp"]["day"],
+          minTemp: listItem["temp"]["min"],
+          maxTemp: listItem["temp"]["max"],
+          icon: this.getWeatherIcon(listItem["weather"][0]["description"])
+        });
+      }
+
+      return weatherArray;
+    }));
+  }
+
   private getWeatherIcon(conditions: string): string {
-    if(conditions === "clear sky")
+    if(conditions === "clear sky" || conditions.indexOf("clear") > -1)
       return "https://www.angulartraining.com/images/weather/sun.png";
 
     if(conditions.indexOf("clouds") > -1)

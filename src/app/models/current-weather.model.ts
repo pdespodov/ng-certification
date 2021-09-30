@@ -5,4 +5,5 @@ export interface ICurrentWeather {
     minTemp: number;
     maxTemp: number;
     icon?: string;
+    date?: Date;
 }

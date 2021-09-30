@@ -1,0 +1,24 @@
+<div class="well flex">
+    <ng-container *ngIf="loading">
+        <div class="loader">Loading...</div>
+    </ng-container>
+    <ng-container *ngIf="!loading">
+        <div>
+            <h3>{{currentWeather.locationName}} ({{zipCode}})</h3>
+            <h4>Current conditions: {{currentWeather.currentConditions}}</h4>
+            <h4>Temperatures today:</h4>
+            <p>
+            Current {{currentWeather.currentTemp | number: "1.0-0"}}<br/>
+            - Max {{currentWeather.maxTemp | number: "1.0-0"}}<br/>
+            - Min {{currentWeather.minTemp | number: "1.0-0"}}<br/>
+            </p>
+            <p *ngIf="currentWeather.locationName != 'Unknown'">
+                <a href="/forecast/{{zipCode}}">Show 5-day forecast for {{currentWeather.locationName}}</a>
+            </p>
+        </div>
+        <div>
+            <span class="close" (click)="closeComponent()">×</span>
+            <img *ngIf="currentWeather.icon" [src]="currentWeather.icon">
+        </div>
+    </ng-container>
+</div>
